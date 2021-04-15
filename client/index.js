@@ -17,7 +17,7 @@ const Root = () => {
       <div className='container'>
         <HashRouter>
           <Route exact path="/" component={SongList}/>
-          <Route path='song/new' component={CreateSong}/>
+          <Route exact path='/song/new' component={CreateSong}/>
         </HashRouter>
       </div>
     </ApolloProvider>

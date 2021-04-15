@@ -1,12 +1,26 @@
 import React, {useState} from 'react';
+import { gql } from '@apollo/client';
+import {graphql} from '@apollo/client/react/hoc';
+import { Link, useHistory } from 'react-router-dom';
 
-const CreateSong = () => {
+const CreateSong = (props) => {
+  const history = useHistory();
   const [title, setTitle] = useState('')
-  console.log(title)
+  
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    props.mutate({
+      variables: {
+        title
+      }
+    }).then(() => history.push('/'))
+  }
+
   return (
     <div>
+      <Link to='/'>Back</Link>
       <h3>Create a new Song</h3>
-      <form>
+      <form onSubmit={handleSubmit}>
         <label>Song Title:</label>
         <input
           value={title}
@@ -17,4 +31,12 @@ const CreateSong = () => {
   );
 };
 
-export default CreateSong;
+const mutation = gql`
+  mutation AddSong($title: String){
+    addSong(title: $title){
+      title
+    }
+  }
+`
+
+export default graphql(mutation)(CreateSong);
