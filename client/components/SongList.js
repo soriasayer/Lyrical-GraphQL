@@ -1,15 +1,16 @@
 import React from 'react';
-import gql from 'graphql-tag'
-import {graphql} from 'react-apollo'
-
+import { gql } from '@apollo/client';
+import {graphql} from '@apollo/client/react/hoc';
 const SongList = ({data}) => {
   return (
     <div>
       {data.songs ? data.songs.map(song => {
         return (
-          <li key={song.id}>
-            {song.title}
-          </li>
+          <ul className='collection'>
+            <li key={song.id} className='collection-item'>
+              {song.title}
+            </li>
+          </ul>
         )
       }) : (
       <div>
@@ -28,6 +29,5 @@ const query = gql`
     }
   }
 `
-
 
 export default graphql(query)(SongList);
