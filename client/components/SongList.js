@@ -1,18 +1,28 @@
 import React from 'react';
-import { gql } from '@apollo/client';
 import {graphql} from '@apollo/client/react/hoc';
 import {Link} from 'react-router-dom'
+import query from '../queries/fetchSongs'
+import { gql } from '@apollo/client';
 
-const SongList = ({data}) => {
+const SongList = ({data, mutate}) => {
+
+  const onDeletSong = (id) => {
+    mutate({
+      variables: {id},
+    }).then(() => data.refetch())
+  }
 
   return (
     <div>
       {data.songs 
         ? (<>
             <ul className='collection'>
-            {data.songs.map(song => (
-                <li key={song.id} className='collection-item'>
-                  {song.title}
+            {data.songs.map(({id, title}) => (
+                <li key={id} className='collection-item'>
+                  {title}
+                  <i className='material-icons' onClick={() => onDeletSong(id)}>
+                    delete
+                  </i>
                 </li>))
               } 
             </ul>
@@ -23,19 +33,18 @@ const SongList = ({data}) => {
         : (<div>
           Loading...
         </div>)}
-      
     </div>
-    
   );
 };
 
-const query = gql`
-  {
-    songs{
+const mutation = gql`
+  mutation DeleteSong($id: ID){
+    deleteSong(id: $id){
       id
-      title
     }
   }
 `
 
-export default graphql(query)(SongList);
+export default graphql(mutation)(
+  graphql(query)(SongList)
+  );
