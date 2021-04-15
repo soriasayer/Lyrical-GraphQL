@@ -5,6 +5,7 @@ import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { ApolloProvider } from '@apollo/client/react';
 import SongList from './components/SongList'
 import CreateSong from './components/CreateSong'
+import SongDetail from './components/SongDetail'
 import './style/style.css'
 
 const client = new ApolloClient({
@@ -18,7 +19,8 @@ const Root = () => {
       <div className='container'>
         <HashRouter>
           <Route exact path="/" component={SongList}/>
-          <Route exact path='/song/new' component={CreateSong}/>
+          <Route exact path='/songs/new' component={CreateSong}/>
+          <Route exact path='/song/:id' component={SongDetail} />
         </HashRouter>
       </div>
     </ApolloProvider>

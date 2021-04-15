@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { gql } from '@apollo/client';
 import {graphql} from '@apollo/client/react/hoc';
 import { Link, useHistory } from 'react-router-dom';
-import query from '../queries/fetchSongs'
+import {songsQuery} from '../queries/fetchSongs'
 
 const CreateSong = (props) => {
   const history = useHistory();
@@ -12,7 +12,7 @@ const CreateSong = (props) => {
     e.preventDefault()
     props.mutate({
       variables: {title},
-      refetchQueries: [{query}]
+      refetchQueries: [{query: songsQuery}]
     }).then(() => history.push('/'))
   }
 

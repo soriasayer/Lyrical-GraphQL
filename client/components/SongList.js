@@ -1,7 +1,7 @@
 import React from 'react';
 import {graphql} from '@apollo/client/react/hoc';
 import {Link} from 'react-router-dom'
-import query from '../queries/fetchSongs'
+import {songsQuery} from '../queries/fetchSongs'
 import { gql } from '@apollo/client';
 
 const SongList = ({data, mutate}) => {
@@ -19,14 +19,16 @@ const SongList = ({data, mutate}) => {
             <ul className='collection'>
             {data.songs.map(({id, title}) => (
                 <li key={id} className='collection-item'>
-                  {title}
+                  <Link to={`/song/${id}`}>
+                    {title}
+                  </Link>
                   <i className='material-icons' onClick={() => onDeletSong(id)}>
                     delete
                   </i>
                 </li>))
               } 
             </ul>
-            <Link to='/song/new' className='btn-floating btn-large red right'>
+            <Link to='/songs/new' className='btn-floating btn-large red right'>
               <i className='material-icons'>add</i>
             </Link>
           </>)
@@ -46,5 +48,5 @@ const mutation = gql`
 `
 
 export default graphql(mutation)(
-  graphql(query)(SongList)
+  graphql(songsQuery)(SongList)
   );
