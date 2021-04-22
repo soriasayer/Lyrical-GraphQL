@@ -1,6 +1,6 @@
 import React from 'react';
 import {graphql} from '@apollo/client/react/hoc';
-import { songQuery } from '../queries/fetchSongs';
+import { GET_SONG  } from '../queries/fetchSongs';
 import { Link } from 'react-router-dom'
 import LyricCreate from './LyricCreate';
 import LyricList from './LyricList';
@@ -21,6 +21,6 @@ const SongDetail = ({data: {song, loading}}) => {
   );
 };
 
-export default graphql(songQuery, {
+export default graphql(GET_SONG , {
   options: ({match}) => {return {variables: {id: match.params.id}}}
 })(SongDetail);

@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const songsQuery = gql`
+export const GET_SONGS = gql`
   {
     songs{
       id
@@ -9,8 +9,8 @@ export const songsQuery = gql`
   }
 `
 
-export const songQuery = gql`
-  query SongQuery($id: ID!){
+export const GET_SONG = gql`
+  query GetSong($id: ID!){
     song(id: $id){
       id
       title
@@ -19,6 +19,14 @@ export const songQuery = gql`
         likes
         content
       }
+    }
+  }
+`
+
+export const DELETE_SONG = gql`
+  mutation DeleteSong($id: ID){
+    deleteSong(id: $id){
+      id
     }
   }
 `

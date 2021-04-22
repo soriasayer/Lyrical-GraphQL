@@ -1,20 +1,30 @@
 import React from 'react';
-import {graphql} from '@apollo/client/react/hoc';
+import { useQuery, useMutation } from '@apollo/client';
 import {Link} from 'react-router-dom'
-import {songsQuery} from '../queries/fetchSongs'
-import { gql } from '@apollo/client';
+import {GET_SONGS, DELETE_SONG} from '../queries/fetchSongs'
 
-const SongList = ({data, mutate}) => {
+const SongList = () => {
+  const { loading, data} = useQuery(GET_SONGS);
+  
+  const [deleteSong] = useMutation(DELETE_SONG, {
+    update(cache, {data: {deleteSong}}){
+      const {songs} = cache.readQuery({query: GET_SONGS})
+      cache.writeQuery({
+        query: GET_SONGS,
+        data: {songs: songs.concat([deleteSong])}
+      })
+    }
+  });
 
   const onDeletSong = (id) => {
-    mutate({
-      variables: {id},
-    }).then(() => data.refetch())
+  deleteSong({
+      variables: {id}
+    })
   }
 
   return (
     <div>
-      {data.songs 
+      {!loading 
         ? (<>
             <ul className='collection'>
             {data.songs.map(({id, title}) => (
@@ -39,14 +49,4 @@ const SongList = ({data, mutate}) => {
   );
 };
 
-const mutation = gql`
-  mutation DeleteSong($id: ID){
-    deleteSong(id: $id){
-      id
-    }
-  }
-`
-
-export default graphql(mutation)(
-  graphql(songsQuery)(SongList)
-  );
+export default SongList
