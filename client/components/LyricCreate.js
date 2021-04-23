@@ -1,13 +1,14 @@
-import { gql } from '@apollo/client';
+import {ADD_LYRIC} from '../queries/fetchSongs'
 import React, { useState } from 'react';
-import {graphql} from '@apollo/client/react/hoc';
+import { useMutation } from '@apollo/client';
 
-const LyricCreate = ({mutate, songId}) => {
+const LyricCreate = ({songId}) => {
   const [content, setContent] = useState('')
+  const [addLyricToSong] = useMutation(ADD_LYRIC);
  
   const handleSubmit = (e) => {
     e.preventDefault()
-    mutate({
+    addLyricToSong({
       variables: {
         content,
         songId
@@ -25,17 +26,4 @@ const LyricCreate = ({mutate, songId}) => {
   );
 };
 
-const mutation = gql`
-  mutation AddLyricToSong($content: String, $songId: ID){
-    addLyricToSong(content: $content, songId: $songId){
-      id
-      lyrics{
-        id
-        content
-        likes
-      }
-    }
-  }
-`
-
-export default graphql(mutation)(LyricCreate);
+export default LyricCreate;

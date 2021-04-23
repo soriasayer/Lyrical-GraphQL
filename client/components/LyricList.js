@@ -1,12 +1,12 @@
-import { gql } from '@apollo/client';
 import React from 'react';
-import {graphql} from '@apollo/client/react/hoc';
+import { useMutation } from '@apollo/client';
+import {LIKE_LYRIC} from '../queries/fetchSongs'
 
-const LyricList = ({lyrics, mutate}) => {
+const LyricList = ({lyrics}) => {
+  const [likeLyric] = useMutation(LIKE_LYRIC);
 
   const handleLike = (id, likes) => {
-
-    mutate({
+    likeLyric({
       variables: {id},
       optimisticResponse: {
         __typename: "Mutation",
@@ -34,13 +34,4 @@ const LyricList = ({lyrics, mutate}) => {
   );
 };
 
-const mutation = gql`
-  mutation LikeLyric($id: ID){
-    likeLyric(id: $id){
-      id
-      likes
-    }
-  }
-`
-
-export default graphql(mutation)(LyricList);
+export default LyricList
