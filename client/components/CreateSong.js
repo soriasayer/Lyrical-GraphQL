@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
-import { gql } from '@apollo/client';
-import {graphql} from '@apollo/client/react/hoc';
+import { useMutation } from '@apollo/client';
 import { Link, useHistory } from 'react-router-dom';
-import {GET_SONGS} from '../queries/fetchSongs'
+import {GET_SONGS, ADD_SONG} from '../queries/fetchSongs'
 
-const CreateSong = (props) => {
+const CreateSong = () => {
   const history = useHistory();
   const [title, setTitle] = useState('')
+  const [addSong] = useMutation(ADD_SONG)
   
   const handleSubmit = (e) => {
     e.preventDefault()
-    props.mutate({
+    addSong({
       variables: {title},
       refetchQueries: [{query: GET_SONGS}]
     }).then(() => history.push('/'))
@@ -31,12 +31,4 @@ const CreateSong = (props) => {
   );
 };
 
-const mutation = gql`
-  mutation AddSong($title: String){
-    addSong(title: $title){
-      title
-    }
-  }
-`
-
-export default graphql(mutation)(CreateSong);
+export default CreateSong;
