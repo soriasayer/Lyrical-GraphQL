@@ -1,3 +1,4 @@
-const MONGO_URI = 'mongodb+srv://soriasayer:kvw3K13a6mvYMoL3@lyric-graphql.s7rxm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+// Add your MongoDB key to the following variable
+const MONGO_URI = '';
 
 module.exports = MONGO_URI
